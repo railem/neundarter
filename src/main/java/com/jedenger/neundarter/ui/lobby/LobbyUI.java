@@ -24,6 +24,17 @@ public class LobbyUI
     {
         lobbyGrid = new Grid<Lobby>();
 
+        Grid.Column idCol = lobbyGrid.addColumn( Lobby::getId ).setCaption( "Id" );
+        Grid.Column nameCol = lobbyGrid.addColumn( Lobby::getName ).setCaption( "Name" );
+        Grid.Column playersCol = lobbyGrid.addColumn( lobby -> lobby.getPlayers().size() + "/2" ).setCaption( "Players" );
+        Grid.Column typeCol = lobbyGrid.addColumn( lobby -> lobby.getGameOptions().getGameType().name() ).setCaption( "GameType" );
+
+
+
         lobbyGrid.setItems( lobbyListener.getLobbies() );
+
+        lobbyGrid.setSizeFull();
+        layout.addComponent(lobbyGrid);
+        layout.setExpandRatio(lobbyGrid, 1f);
     }
 }

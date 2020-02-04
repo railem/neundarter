@@ -3,6 +3,7 @@ package com.jedenger.neundarter.ui.lobby;
 import com.jedenger.neundarter.game.lobby.Lobby;
 import com.vaadin.ui.VerticalLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LobbyPresenter implements I_LobbyListener
@@ -18,6 +19,13 @@ public class LobbyPresenter implements I_LobbyListener
     @Override
     public List<Lobby> getLobbies()
     {
-        return null;
+        List<Lobby> lobbies = new ArrayList<>();
+        lobbies.add( new Lobby( "new Game 1") );
+        lobbies.add( new Lobby( "xxx") );
+        lobbies.add( new Lobby( "awfaf") );
+        lobbies.add( new Lobby( "nawg") );
+        lobbies.add( new Lobby( "awaaw Game Game!") );
+
+        return lobbies;
     }
 }
