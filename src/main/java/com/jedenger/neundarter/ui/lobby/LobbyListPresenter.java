@@ -2,21 +2,31 @@ package com.jedenger.neundarter.ui.lobby;
 
 import com.jedenger.neundarter.game.lobby.I_LobbyChangeListener;
 import com.jedenger.neundarter.game.lobby.Lobby;
+import com.jedenger.neundarter.game.lobby.Player;
 import com.jedenger.neundarter.game.lobby.S_LobbyManager;
+import com.jedenger.neundarter.ui.I_MainListener;
 import com.vaadin.ui.VerticalLayout;
 
-public class LobbyPresenter implements I_LobbyListener, I_LobbyChangeListener
+public class LobbyListPresenter implements I_LobbyListListener, I_LobbyChangeListener
 {
+    private I_MainListener mainListener;
     private S_LobbyManager lobbyManager;
     private VerticalLayout layout;
+    private Player player;
 
     private LobbyListUI lobbyListUI;
-    private CreateLobbyUI createLobbyUI;
 
-    public LobbyPresenter( VerticalLayout layout )
+    public LobbyListPresenter( I_MainListener mainListener, VerticalLayout layout, Player player )
     {
+        this.mainListener = mainListener;
         this.layout = layout;
+        this.player = player;
         this.lobbyManager = S_LobbyManager.getInstance();
+
+        this.lobbyListUI = new LobbyListUI( this, layout );
+
+        lobbyListUI.setLobbyList( lobbyManager.getLobbies() );
+        lobbyManager.registerListener( this );
     }
 
 
@@ -26,29 +36,10 @@ public class LobbyPresenter implements I_LobbyListener, I_LobbyChangeListener
         lobbyListUI.setLobbyList( lobbyManager.getLobbies() );
     }
 
-
     @Override
-    public void listLobbies()
-    {
-        this.lobbyListUI = new LobbyListUI( this, layout );
-
-        lobbyListUI.setLobbyList( lobbyManager.getLobbies() );
-        lobbyManager.registerListener( this );
-    }
-
-    @Override
-    public void createLobby()
+    public void showCreateLobbyUI() 
     {
         lobbyManager.unregisterListener( this );
-
-        // create new lobby
-
-        this.createLobbyUI = new CreateLobbyUI( this, layout );
-    }
-
-    @Override
-    public void joinLobby( Lobby lobby )
-    {
-        lobbyManager.unregisterListener( this );
+        mainListener.showCreateLobbyUI();
     }
 }

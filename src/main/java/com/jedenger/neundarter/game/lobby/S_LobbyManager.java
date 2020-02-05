@@ -22,18 +22,17 @@ public class S_LobbyManager
     {
         this.lobbyMap = new HashMap<>();
         this.listeners = new ArrayList<>();
-
-        //for( int i = 0; i < 20; i++ )
-        //{
-        //    String uuid = UUID.randomUUID().toString();
-        //    lobbyMap.put( uuid, new Lobby( uuid, "Lobby-" + i ) );
-        //}
     }
 
-    public void addLobby( Lobby lobby )
+    public Lobby createLobby( Player player )
     {
+        Lobby lobby = new Lobby();
+        lobby.setName( player.getName() + "'s Game!");
+
         lobbyMap.put( lobby.getId(), lobby );
         messageListeners();
+
+        return lobby;
     }
 
     public List<Lobby> getLobbies()
@@ -44,6 +43,13 @@ public class S_LobbyManager
     public void updateLobby( Lobby updatedLobby )
     {
         lobbyMap.put( updatedLobby.getId(), updatedLobby );
+        messageListeners();
+    }
+
+    public void closeLobby( Lobby lobby )
+    {
+        lobby.close();
+        lobbyMap.remove( lobby.getId() );
         messageListeners();
     }
 

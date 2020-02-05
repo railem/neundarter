@@ -11,49 +11,57 @@ public class Lobby
     private List<Player> players;
     private GameOptions gameOptions;
 
-    public Lobby(String name) 
+    public Lobby()
     {
-        this(UUID.randomUUID().toString(), name);
-    }
-
-    public Lobby(String id, String name)
-    {
-        this.id = id;
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.players = new ArrayList<>();
         this.gameOptions = new GameOptions( E_GameType.X01 );
     }
     
-    public String getName() {
+    public String getName() 
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) 
+    {
         this.name = name;
     }
 
-    public String getId() {
+    public String getId() 
+    {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(String id) 
+    {
         this.id = id;
     }
 
-    public GameOptions getGameOptions() {
+    public GameOptions getGameOptions() 
+    {
         return gameOptions;
     }
 
-    public void setGameOptions(GameOptions gameOptions) {
+    public void setGameOptions(GameOptions gameOptions) 
+    {
         this.gameOptions = gameOptions;
     }
 
-    public List<Player> getPlayers() {
+    public List<Player> getPlayers() 
+    {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(List<Player> players) 
+    {
         this.players = players;
+    }
+
+    public void close() 
+    {
+        //TODO: close lobby if all players left
     }
     
     

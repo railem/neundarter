@@ -10,12 +10,12 @@ import java.util.List;
 public class LobbyListUI
 {
 
-    private final I_LobbyListener lobbyListener;
+    private final I_LobbyListListener lobbyListener;
     private final VerticalLayout layout;
 
     private Grid<Lobby> lobbyGrid;
 
-    public LobbyListUI(I_LobbyListener lobbyListener, VerticalLayout layout )
+    public LobbyListUI(I_LobbyListListener lobbyListener, VerticalLayout layout )
     {
         this.lobbyListener = lobbyListener;
         this.layout = layout;
@@ -30,7 +30,7 @@ public class LobbyListUI
         initLobbyGrid();
 
         Button createLobbyButton = new Button("Create Lobby");
-        createLobbyButton.addClickListener( clickEvent -> lobbyListener.createLobby() );
+        createLobbyButton.addClickListener( clickEvent -> lobbyListener.showCreateLobbyUI() );
         layout.addComponent( createLobbyButton );
     }
 
@@ -38,8 +38,6 @@ public class LobbyListUI
     private void initLobbyGrid()
     {
         lobbyGrid = new Grid<Lobby>();
-
-        Grid.Column idCol = lobbyGrid.addColumn( Lobby::getId ).setCaption( "Id" );
         Grid.Column nameCol = lobbyGrid.addColumn( Lobby::getName ).setCaption( "Name" );
         Grid.Column playersCol = lobbyGrid.addColumn( lobby -> lobby.getPlayers().size() + "/2" ).setCaption( "Players" );
         Grid.Column typeCol = lobbyGrid.addColumn( lobby -> lobby.getGameOptions().getGameType().name() ).setCaption( "GameType" );
