@@ -2,7 +2,7 @@ package com.jedenger.neundarter.ui;
 
 import javax.servlet.annotation.WebServlet;
 
-import com.jedenger.neundarter.ui.lobby.LobbyPresenter;
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
@@ -18,18 +18,19 @@ import com.vaadin.ui.VerticalLayout;
  * overridden to add component to the user interface and initialize non-component functionality.
  */
 @Theme("darttheme")
+@Push
 public class MainUI extends UI
 {
 
     @Override
     protected void init(VaadinRequest vaadinRequest)
     {
+        setPollInterval(500);
         final VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setSizeFull();
-        
         setContent( mainLayout );
 
-        LobbyPresenter lobbyPresenter = new LobbyPresenter( mainLayout );
+        MainPresenter mainPresenter = new MainPresenter( mainLayout );
     }
 
     @WebServlet( urlPatterns = "/*", name = "MainUIServlet", asyncSupported = true )

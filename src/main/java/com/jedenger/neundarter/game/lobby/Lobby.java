@@ -13,7 +13,12 @@ public class Lobby
 
     public Lobby(String name) 
     {
-        this.id = UUID.randomUUID().toString();
+        this(UUID.randomUUID().toString(), name);
+    }
+
+    public Lobby(String id, String name)
+    {
+        this.id = id;
         this.name = name;
         this.players = new ArrayList<>();
         this.gameOptions = new GameOptions( E_GameType.X01 );

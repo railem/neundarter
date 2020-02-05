@@ -1,31 +1,54 @@
 package com.jedenger.neundarter.ui.lobby;
 
+import com.jedenger.neundarter.game.lobby.I_LobbyChangeListener;
 import com.jedenger.neundarter.game.lobby.Lobby;
+import com.jedenger.neundarter.game.lobby.S_LobbyManager;
 import com.vaadin.ui.VerticalLayout;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class LobbyPresenter implements I_LobbyListener
+public class LobbyPresenter implements I_LobbyListener, I_LobbyChangeListener
 {
+    private S_LobbyManager lobbyManager;
+    private VerticalLayout layout;
 
-    private LobbyUI lobbyUI;
+    private LobbyListUI lobbyListUI;
+    private CreateLobbyUI createLobbyUI;
 
     public LobbyPresenter( VerticalLayout layout )
     {
-        this.lobbyUI = new LobbyUI( this, layout );
+        this.layout = layout;
+        this.lobbyManager = S_LobbyManager.getInstance();
+    }
+
+
+    @Override
+    public void lobbyListChanged()
+    {
+        lobbyListUI.setLobbyList( lobbyManager.getLobbies() );
+    }
+
+
+    @Override
+    public void listLobbies()
+    {
+        this.lobbyListUI = new LobbyListUI( this, layout );
+
+        lobbyListUI.setLobbyList( lobbyManager.getLobbies() );
+        lobbyManager.registerListener( this );
     }
 
     @Override
-    public List<Lobby> getLobbies()
+    public void createLobby()
     {
-        List<Lobby> lobbies = new ArrayList<>();
-        lobbies.add( new Lobby( "new Game 1") );
-        lobbies.add( new Lobby( "xxx") );
-        lobbies.add( new Lobby( "awfaf") );
-        lobbies.add( new Lobby( "nawg") );
-        lobbies.add( new Lobby( "awaaw Game Game!") );
+        lobbyManager.unregisterListener( this );
 
-        return lobbies;
+        // create new lobby
+
+        this.createLobbyUI = new CreateLobbyUI( this, layout );
+    }
+
+    @Override
+    public void joinLobby( Lobby lobby )
+    {
+        lobbyManager.unregisterListener( this );
     }
 }

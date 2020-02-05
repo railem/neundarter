@@ -1,10 +1,11 @@
 package com.jedenger.neundarter.ui.lobby;
 
-import com.jedenger.neundarter.game.lobby.Lobby;
 
-import java.util.List;
+import com.jedenger.neundarter.game.lobby.Lobby;
 
 public interface I_LobbyListener
 {
-    List<Lobby> getLobbies();
+    void listLobbies();
+    void createLobby();
+    void joinLobby( Lobby lobby );
 }
