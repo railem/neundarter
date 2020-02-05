@@ -9,16 +9,34 @@ public class Lobby
     private String id;
     private String name;
     private List<Player> players;
-    private GameOptions gameOptions;
+    private int maxPlayers;
+    private E_GameType gameType;
+
+    private I_GameOptions gameOptions;
 
     public Lobby()
     {
         this.id = UUID.randomUUID().toString();
-        this.name = name;
         this.players = new ArrayList<>();
-        this.gameOptions = new GameOptions( E_GameType.X01 );
+        this.gameType = E_GameType.X01;
+        this.maxPlayers = 2;
+
+        initGameOptions();
     }
     
+    private void initGameOptions()
+    {
+        switch( gameType )
+        {
+            case X01:
+                gameOptions = new X01Options();
+                break;
+            case CRICKET:
+                gameOptions = new CricketOptions();
+                break;
+        }
+    }
+
     public String getName() 
     {
         return name;
@@ -34,19 +52,9 @@ public class Lobby
         return id;
     }
 
-    public void setId(String id) 
-    {
-        this.id = id;
-    }
-
-    public GameOptions getGameOptions() 
+    public I_GameOptions getGameOptions() 
     {
         return gameOptions;
-    }
-
-    public void setGameOptions(GameOptions gameOptions) 
-    {
-        this.gameOptions = gameOptions;
     }
 
     public List<Player> getPlayers() 
@@ -54,15 +62,39 @@ public class Lobby
         return players;
     }
 
-    public void setPlayers(List<Player> players) 
+    public E_GameType getGameType() 
     {
-        this.players = players;
+        return gameType;
     }
 
-    public void close() 
-    {
-        //TODO: close lobby if all players left
-    }
     
+    public int getMaxPlayers() 
+    {
+        return maxPlayers;
+    }
+
+    public void setMaxPlayers(int maxPlayers) 
+    {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public void setGameType(E_GameType gameType) 
+    {
+        this.gameType = gameType;
+        initGameOptions();
+    }
+
+    public void join(Player player) 
+    {
+        this.players.add( player );
+    }
+
+    public void leave( Player player ) 
+    {
+        if( players.contains( player ) )
+        {
+            players.remove( player );
+        }
+    }    
     
 }

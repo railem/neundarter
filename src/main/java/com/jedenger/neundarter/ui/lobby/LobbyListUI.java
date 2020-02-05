@@ -39,8 +39,9 @@ public class LobbyListUI
     {
         lobbyGrid = new Grid<Lobby>();
         Grid.Column nameCol = lobbyGrid.addColumn( Lobby::getName ).setCaption( "Name" );
-        Grid.Column playersCol = lobbyGrid.addColumn( lobby -> lobby.getPlayers().size() + "/2" ).setCaption( "Players" );
-        Grid.Column typeCol = lobbyGrid.addColumn( lobby -> lobby.getGameOptions().getGameType().name() ).setCaption( "GameType" );
+        Grid.Column playersCol = lobbyGrid.addColumn( lobby -> lobby.getPlayers().size() + "/" + lobby.getMaxPlayers() ).setCaption( "Players" );
+        Grid.Column typeCol = lobbyGrid.addColumn( lobby -> lobby.getGameType().name() ).setCaption( "GameType" );
+        Grid.Column modeCol = lobbyGrid.addColumn( lobby -> lobby.getGameOptions().getInfo() ).setCaption( "Info" );
 
         lobbyGrid.setSizeFull();
         layout.addComponent(lobbyGrid);

@@ -31,7 +31,7 @@ public class CreateLobbyPresenter implements I_CreateLobbyListener
     @Override
     public void showLobbyList() 
     {
-        lobbyManager.closeLobby( currentLobby );
+        lobbyManager.leaveLobby( player, currentLobby );
         mainListener.showLobbyListUI();
     }
 

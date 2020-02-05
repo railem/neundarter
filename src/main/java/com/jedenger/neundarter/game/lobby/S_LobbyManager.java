@@ -28,6 +28,7 @@ public class S_LobbyManager
     {
         Lobby lobby = new Lobby();
         lobby.setName( player.getName() + "'s Game!");
+        lobby.join( player );
 
         lobbyMap.put( lobby.getId(), lobby );
         messageListeners();
@@ -46,10 +47,14 @@ public class S_LobbyManager
         messageListeners();
     }
 
-    public void closeLobby( Lobby lobby )
+    public void leaveLobby( Player player, Lobby lobby )
     {
-        lobby.close();
-        lobbyMap.remove( lobby.getId() );
+        lobby.leave( player );
+
+        if( lobby.getPlayers().isEmpty() )
+        {
+            lobbyMap.remove( lobby.getId() );
+        }
         messageListeners();
     }
 
