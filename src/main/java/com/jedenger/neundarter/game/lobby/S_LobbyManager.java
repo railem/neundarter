@@ -3,6 +3,8 @@ package com.jedenger.neundarter.game.lobby;
 import com.jedenger.neundarter.game.lobby.options.I_LobbyUpdateListener;
 
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class S_LobbyManager
 {
@@ -10,7 +12,7 @@ public class S_LobbyManager
     private Map<String,Lobby> lobbyMap;
 
     private List<I_LobbyListChangeListener> listListeners;
-    private Map<String, I_LobbyUpdateListener> updateListeners;
+    private Map<I_LobbyUpdateListener, String> updateListeners;
 
     public static S_LobbyManager getInstance()
     {
@@ -49,6 +51,8 @@ public class S_LobbyManager
     public void updateLobby( Lobby updatedLobby )
     {
         lobbyMap.put( updatedLobby.getId(), updatedLobby );
+
+        messageUpdateListeners( updatedLobby );
         messageListListeners();
     }
 
@@ -60,6 +64,7 @@ public class S_LobbyManager
         {
             lobbyMap.remove( lobby.getId() );
         }
+        messageUpdateListeners( lobby );
         messageListListeners();
     }
 
@@ -70,7 +75,7 @@ public class S_LobbyManager
 
     public void registerListener( String lobbyId, I_LobbyUpdateListener listener )
     {
-        updateListeners.put( lobbyId, listener );
+        updateListeners.put( listener, lobbyId );
     }
 
 
@@ -84,10 +89,9 @@ public class S_LobbyManager
 
     public void unregisterListener( I_LobbyUpdateListener listener )
     {
-        if( updateListeners.containsValue( listener ) )
+        if( updateListeners.containsKey( listener ) )
         {
-            updateListeners.remove( updateListeners.entrySet().stream()
-                    .filter( entry -> entry.equals(listener) ).map( Map.Entry::getKey ).findFirst().get() );
+            updateListeners.remove( listener );
         }
     }
 
@@ -96,8 +100,9 @@ public class S_LobbyManager
         listListeners.forEach( l -> l.lobbyListChanged() );
     }
 
-    private void messageUpdateListeners()
+    private void messageUpdateListeners( Lobby lobby )
     {
-        //updateListeners.forEach( l -> l.lobbyUpdated( ) );
+        updateListeners.entrySet().stream().filter( e -> e.getValue().equals( lobby.getId() ) )
+        .collect( Collectors.toList() ).forEach( e -> e.getKey().lobbyUpdated( lobby ) );
     }
 }

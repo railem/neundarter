@@ -32,7 +32,7 @@ public class CreateLobbyPresenter implements I_CreateLobbyListener, I_LobbyUpdat
         this.createLobbyUI = new CreateLobbyUI( this, layout );
 
         this.lobbyManager = S_LobbyManager.getInstance();
-        lobbyManager.registerListener( this );
+        lobbyManager.registerListener( currentLobby.getId(), this );
     }
 
     @Override
