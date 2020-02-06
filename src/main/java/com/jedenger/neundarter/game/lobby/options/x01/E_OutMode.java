@@ -1,4 +1,4 @@
-package com.jedenger.neundarter.game.lobby;
+package com.jedenger.neundarter.game.lobby.options.x01;
 
 public enum E_OutMode 
 {

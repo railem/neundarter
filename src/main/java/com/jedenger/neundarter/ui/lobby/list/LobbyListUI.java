@@ -1,4 +1,4 @@
-package com.jedenger.neundarter.ui.lobby;
+package com.jedenger.neundarter.ui.lobby.list;
 
 import com.jedenger.neundarter.game.lobby.Lobby;
 import com.vaadin.ui.Button;
@@ -32,6 +32,10 @@ public class LobbyListUI
         Button createLobbyButton = new Button("Create Lobby");
         createLobbyButton.addClickListener( clickEvent -> lobbyListener.showCreateLobbyUI() );
         layout.addComponent( createLobbyButton );
+
+        Button joinLobbyButton = new Button("Join Lobby");
+        joinLobbyButton.addClickListener( clickEvent -> lobbyListener.joinLobby( lobbyGrid.asSingleSelect().getSelectedItem().get() ) );
+        layout.addComponent( joinLobbyButton );
     }
 
 
@@ -41,7 +45,14 @@ public class LobbyListUI
         Grid.Column nameCol = lobbyGrid.addColumn( Lobby::getName ).setCaption( "Name" );
         Grid.Column playersCol = lobbyGrid.addColumn( lobby -> lobby.getPlayers().size() + "/" + lobby.getMaxPlayers() ).setCaption( "Players" );
         Grid.Column typeCol = lobbyGrid.addColumn( lobby -> lobby.getGameType().name() ).setCaption( "GameType" );
-        Grid.Column modeCol = lobbyGrid.addColumn( lobby -> lobby.getGameOptions().getInfo() ).setCaption( "Info" );
+
+        Grid.Column modeCol = lobbyGrid.addColumn( lobby -> lobby.getGameOptions().getMode() ).setCaption( "Mode" );
+        Grid.Column optionsCol = lobbyGrid.addColumn( lobby -> lobby.getGameOptions().getOptions() ).setCaption( "Options" );
+
+        Grid.Column legsCol = lobbyGrid.addColumn( lobby -> lobby.getGameOptions().getLegs() ).setCaption( "Legs" );
+        legsCol.setWidth( 80d );
+        Grid.Column setsCol = lobbyGrid.addColumn( lobby -> lobby.getGameOptions().getSets() ).setCaption( "Sets" );
+        setsCol.setWidth( 80d );
 
         lobbyGrid.setSizeFull();
         layout.addComponent(lobbyGrid);

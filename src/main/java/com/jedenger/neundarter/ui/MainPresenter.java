@@ -1,7 +1,8 @@
 package com.jedenger.neundarter.ui;
 
+import com.jedenger.neundarter.game.lobby.Lobby;
 import com.jedenger.neundarter.game.lobby.Player;
-import com.jedenger.neundarter.ui.lobby.LobbyListPresenter;
+import com.jedenger.neundarter.ui.lobby.list.LobbyListPresenter;
 import com.jedenger.neundarter.ui.lobby.create.CreateLobbyPresenter;
 import com.jedenger.neundarter.ui.login.LoginPresenter;
 import com.vaadin.ui.VerticalLayout;
@@ -26,10 +27,17 @@ public class MainPresenter implements I_MainListener
     }
 
     @Override
-    public void showCreateLobbyUI() 
+    public void showLobbyDetailsUI()
     {
         CreateLobbyPresenter lobbyCreatePresenter = new CreateLobbyPresenter( this, mainLayout, player );
     }
+
+    @Override
+    public void showLobbyDetailsUI(Lobby lobby)
+    {
+        CreateLobbyPresenter lobbyCreatePresenter = new CreateLobbyPresenter( this, mainLayout, player );
+    }
+
 
     @Override
     public void showLobbyListUI() 

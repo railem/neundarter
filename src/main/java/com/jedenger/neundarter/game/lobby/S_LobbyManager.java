@@ -1,12 +1,16 @@
 package com.jedenger.neundarter.game.lobby;
 
+import com.jedenger.neundarter.game.lobby.options.I_LobbyUpdateListener;
+
 import java.util.*;
 
 public class S_LobbyManager
 {
     private static S_LobbyManager instance;
     private Map<String,Lobby> lobbyMap;
-    private List<I_LobbyChangeListener> listeners;
+
+    private List<I_LobbyListChangeListener> listListeners;
+    private Map<String, I_LobbyUpdateListener> updateListeners;
 
     public static S_LobbyManager getInstance()
     {
@@ -21,7 +25,8 @@ public class S_LobbyManager
     public S_LobbyManager()
     {
         this.lobbyMap = new HashMap<>();
-        this.listeners = new ArrayList<>();
+        this.listListeners = new ArrayList<>();
+        this.updateListeners = new HashMap<>();
     }
 
     public Lobby createLobby( Player player )
@@ -31,7 +36,7 @@ public class S_LobbyManager
         lobby.join( player );
 
         lobbyMap.put( lobby.getId(), lobby );
-        messageListeners();
+        messageListListeners();
 
         return lobby;
     }
@@ -44,7 +49,7 @@ public class S_LobbyManager
     public void updateLobby( Lobby updatedLobby )
     {
         lobbyMap.put( updatedLobby.getId(), updatedLobby );
-        messageListeners();
+        messageListListeners();
     }
 
     public void leaveLobby( Player player, Lobby lobby )
@@ -55,24 +60,44 @@ public class S_LobbyManager
         {
             lobbyMap.remove( lobby.getId() );
         }
-        messageListeners();
+        messageListListeners();
     }
 
-    public void registerListener( I_LobbyChangeListener listener )
+    public void registerListener( I_LobbyListChangeListener listener )
     {
-        listeners.add( listener );
+        listListeners.add( listener );
     }
 
-    private void messageListeners()
+    public void registerListener( String lobbyId, I_LobbyUpdateListener listener )
     {
-        listeners.forEach( l -> l.lobbyListChanged() );
+        updateListeners.put( lobbyId, listener );
     }
 
-    public void unregisterListener( I_LobbyChangeListener listener )
+
+    public void unregisterListener( I_LobbyListChangeListener listener )
     {
-        if( listeners.contains( listener ) )
+        if( listListeners.contains( listener ) )
         {
-            listeners.remove( listener );
+            listListeners.remove( listener );
         }
+    }
+
+    public void unregisterListener( I_LobbyUpdateListener listener )
+    {
+        if( updateListeners.containsValue( listener ) )
+        {
+            updateListeners.remove( updateListeners.entrySet().stream()
+                    .filter( entry -> entry.equals(listener) ).map( Map.Entry::getKey ).findFirst().get() );
+        }
+    }
+
+    private void messageListListeners()
+    {
+        listListeners.forEach( l -> l.lobbyListChanged() );
+    }
+
+    private void messageUpdateListeners()
+    {
+        //updateListeners.forEach( l -> l.lobbyUpdated( ) );
     }
 }

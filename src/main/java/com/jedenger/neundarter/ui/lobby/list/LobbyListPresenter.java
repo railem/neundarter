@@ -1,13 +1,13 @@
-package com.jedenger.neundarter.ui.lobby;
+package com.jedenger.neundarter.ui.lobby.list;
 
-import com.jedenger.neundarter.game.lobby.I_LobbyChangeListener;
+import com.jedenger.neundarter.game.lobby.I_LobbyListChangeListener;
 import com.jedenger.neundarter.game.lobby.Lobby;
 import com.jedenger.neundarter.game.lobby.Player;
 import com.jedenger.neundarter.game.lobby.S_LobbyManager;
 import com.jedenger.neundarter.ui.I_MainListener;
 import com.vaadin.ui.VerticalLayout;
 
-public class LobbyListPresenter implements I_LobbyListListener, I_LobbyChangeListener
+public class LobbyListPresenter implements I_LobbyListListener, I_LobbyListChangeListener
 {
     private I_MainListener mainListener;
     private S_LobbyManager lobbyManager;
@@ -40,6 +40,13 @@ public class LobbyListPresenter implements I_LobbyListListener, I_LobbyChangeLis
     public void showCreateLobbyUI() 
     {
         lobbyManager.unregisterListener( this );
-        mainListener.showCreateLobbyUI();
+        mainListener.showLobbyDetailsUI();
+    }
+
+    @Override
+    public void joinLobby( Lobby lobby )
+    {
+        lobbyManager.unregisterListener( this );
+        mainListener.showLobbyDetailsUI( lobby );
     }
 }
