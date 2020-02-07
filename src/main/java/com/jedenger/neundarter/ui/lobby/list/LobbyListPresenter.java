@@ -46,7 +46,16 @@ public class LobbyListPresenter implements I_LobbyListListener, I_LobbyListChang
     @Override
     public void joinLobby( Lobby lobby )
     {
-        lobbyManager.unregisterListener( this );
-        mainListener.showLobbyDetailsUI( lobby );
+        if( lobby.getPlayers().size() < lobby.getMaxPlayers() )
+        {
+            lobbyManager.unregisterListener( this );
+
+            lobbyManager.joinLobby( player, lobby );
+            mainListener.showLobbyDetailsUI( lobby );
+        }
+        else
+        {
+            //TODO show error ?
+        }
     }
 }

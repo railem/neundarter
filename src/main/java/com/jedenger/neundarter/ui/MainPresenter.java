@@ -33,9 +33,9 @@ public class MainPresenter implements I_MainListener
     }
 
     @Override
-    public void showLobbyDetailsUI(Lobby lobby)
+    public void showLobbyDetailsUI( Lobby lobby )
     {
-        CreateLobbyPresenter lobbyCreatePresenter = new CreateLobbyPresenter( this, mainLayout, player );
+        CreateLobbyPresenter lobbyCreatePresenter = new CreateLobbyPresenter( this, mainLayout, player, lobby );
     }
 
 

@@ -19,7 +19,15 @@ public class CreateLobbyPresenter implements I_CreateLobbyListener, I_LobbyUpdat
 
     public CreateLobbyPresenter( I_MainListener mainListener, VerticalLayout mainLayout, Player player )
     {
-        this( mainListener, mainLayout, player, S_LobbyManager.getInstance().createLobby( player ) );
+        this.mainListener = mainListener;
+        this.layout = mainLayout;
+        this.player = player;
+        this.lobbyManager = S_LobbyManager.getInstance();
+        this.createLobbyUI = new CreateLobbyUI( this, layout );
+
+        currentLobby = lobbyManager.createLobby( player );
+
+        lobbyManager.registerListener( currentLobby.getId(), this );
     }
 
     public CreateLobbyPresenter( I_MainListener mainListener, VerticalLayout mainLayout, Player player, Lobby lobby )
@@ -27,11 +35,11 @@ public class CreateLobbyPresenter implements I_CreateLobbyListener, I_LobbyUpdat
         this.mainListener = mainListener;
         this.layout = mainLayout;
         this.player = player;
-
-        currentLobby = lobby;
+        this.lobbyManager = S_LobbyManager.getInstance();
         this.createLobbyUI = new CreateLobbyUI( this, layout );
 
-        this.lobbyManager = S_LobbyManager.getInstance();
+        currentLobby = lobby;
+
         lobbyManager.registerListener( currentLobby.getId(), this );
     }
 

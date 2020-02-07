@@ -31,6 +31,12 @@ public class S_LobbyManager
         this.updateListeners = new HashMap<>();
     }
 
+
+    public List<Lobby> getLobbies()
+    {
+        return new ArrayList( lobbyMap.values() );
+    }
+
     public Lobby createLobby( Player player )
     {
         Lobby lobby = new Lobby();
@@ -43,17 +49,16 @@ public class S_LobbyManager
         return lobby;
     }
 
-    public List<Lobby> getLobbies()
+    public Lobby joinLobby( Player player, Lobby lobby )
     {
-        return new ArrayList( lobbyMap.values() );
-    }
+        lobby.join( player );
 
-    public void updateLobby( Lobby updatedLobby )
-    {
-        lobbyMap.put( updatedLobby.getId(), updatedLobby );
+        lobbyMap.put( lobby.getId(), lobby );
 
-        messageUpdateListeners( updatedLobby );
+        messageUpdateListeners( lobby );
         messageListListeners();
+
+        return lobby;
     }
 
     public void leaveLobby( Player player, Lobby lobby )
@@ -65,6 +70,14 @@ public class S_LobbyManager
             lobbyMap.remove( lobby.getId() );
         }
         messageUpdateListeners( lobby );
+        messageListListeners();
+    }
+
+    public void updateLobby( Lobby updatedLobby )
+    {
+        lobbyMap.put( updatedLobby.getId(), updatedLobby );
+
+        messageUpdateListeners( updatedLobby );
         messageListListeners();
     }
 
@@ -105,4 +118,5 @@ public class S_LobbyManager
         updateListeners.entrySet().stream().filter( e -> e.getValue().equals( lobby.getId() ) )
         .collect( Collectors.toList() ).forEach( e -> e.getKey().lobbyUpdated( lobby ) );
     }
+
 }
